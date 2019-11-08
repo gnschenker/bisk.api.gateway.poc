@@ -1,0 +1,51 @@
+{
+  "ReRoutes": [
+    {
+      "DownstreamPathTemplate": "/api/programs",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "program-selection",
+          "Port": 5000
+        }
+      ],
+      "UpstreamPathTemplate": "/programs"
+    },
+    {
+      "DownstreamPathTemplate": "/api/programs{catchAll}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "program-selection",
+          "Port": 5000
+        }
+      ],
+      "UpstreamPathTemplate": "/programs{catchAll}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/applications",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "application-management",
+          "Port": 6000
+        }
+      ],
+      "UpstreamPathTemplate": "/applications"
+    },
+    {
+      "DownstreamPathTemplate": "/api/applications{catchAll}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "application-management",
+          "Port": 6000
+        }
+      ],
+      "UpstreamPathTemplate": "/applications{catchAll}"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:7000"
+  }
+}

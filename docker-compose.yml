@@ -1,0 +1,20 @@
+version: "2.4"
+services:
+  program-selection:
+    image: bisk/progrma-selection-api:dev
+    build: ProgramSelection
+    ports:
+      - 5000:5000
+      - 5001:5001
+
+  application-management:
+    image: bisk/application-management-api:dev
+    build: ApplicationManagement
+    ports:
+      - 6000:6000
+
+  gateway:
+    image: bisk/gateway:dev
+    build: GatewayApi
+    ports:
+      - 7000:7000

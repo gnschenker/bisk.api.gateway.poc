@@ -1,0 +1,86 @@
+= API Gateway
+
+We have:
+
+* An *API gateway* listening at http://localhost:7000
+* The routing is defined in the file `ocelot.json` in the `ApiGateway` project
+* An *application management* microservice listening at `http://application-management:6000` with the following endpoints
+** `/api/applications`
+** `/api/applications/{applicationId}`
+* A *programs selection* microservice listening at `http://product-selection:5000` with the following endpoints
+** `/api/programs`
+** `/api/programs/{programId}`
+* The API Gateway reroutes requests:
+** to `/applications` and `/applications/{applicationId}` to the *application management* microservice
+** to `/programs` and `/programs/{programId}` to the *programs selection* microservice
+
+== Running the application
+
+. Navigate to this solution folder 
+. Execute the following command to run the application:
++
+[source]
+--
+docker-compose up -d --build
+--
+
+. Double check that the app is up and running:
++
+[source]
+--
+docker-compose ps
+--
+
+. Open another terminal window and navigate to this solution folder
+. Follow the logs of the `gateway` component:
++
+[source]
+--
+docker-compose logs -f gateway
+--
+
+== Testing the application
+
+. Open another terminal window
+. Make sure that the gateway is responding:
++
+[source]
+--
+curl http://localhost:7000/api/values
+--
++
+it should reply with:
++
+[source]
+--
+value1, value2
+--
+
+. Try to access the `applications` and `programs` in their respective microservice:
++
+[source]
+--
+# this will be re-routed to http://application-management:6000/api/applications
+curl http://localhost:7000/applications
+
+# this will be re-routed to http://program-selection:5000/api/programs
+curl http://localhost:7000/programs
+--
+
+
+. Also try to get a single application or program:
++
+[source]
+--
+curl http://localhost:7000/applications/12
+curl http://localhost:7000/programs/5
+--
+
+== Tear down application
+
+. To tear down the application execute:
++
+[source]
+--
+docker-compose down -v
+--
