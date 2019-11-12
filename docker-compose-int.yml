@@ -1,0 +1,42 @@
+version: "2.4"
+services:
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - pg-data-int:/var/lib/postgresql/data
+      - ./db/migrations/scripts:/docker-entrypoint-initdb.d
+    ports:
+      - 15432:5432
+    environment:
+      POSTGRES_DB: bisk-programs
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: topsecret
+    healthcheck:
+      test: nc -z localhost 5432 || exit -1
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  program-selection:
+    image: bisk/program-selection:1.0
+    ports:
+      - 5050:5000
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # application-management:
+  #   image: bisk/application-management-api:dev
+  #   build: ApplicationManagement
+  #   ports:
+  #     - 6000:6000
+
+  gateway:
+    image: bisk/gateway:dev
+    build: GatewayApi
+    ports:
+      - 7000:7000
+
+volumes:
+  pg-data-int:
